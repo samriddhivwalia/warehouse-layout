@@ -1,0 +1,23 @@
+{
+  "name": "warehouse-layout",
+  "version": "1.0.0",
+  "description": "A warehouse 3D model based on a specific data structure. Model is drawn by ThreeJS",
+  "main": "input.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samriddhivwalia/warehouse-layout.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samriddhivwalia/warehouse-layout/issues"
+  },
+  "homepage": "https://github.com/samriddhivwalia/warehouse-layout#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
