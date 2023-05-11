@@ -45,11 +45,11 @@
       var selectedLanes = [];
       var selectedRack = "";
 
-      import { WIDTH_OF_RACK, HEIGHT_OF_RACK, NUMBER_OF_RACK , WAREHOUSE_LENGTH, WAREHOUSE_DEPTH } from './input.js';
+      // import { maxLanes, maxRacksPerColumn, totalRacks, rackHeight } from './input.js';
+      import {WIDTH_OF_RACK, HEIGHT_OF_RACK, NUMBER_OF_RACK,WAREHOUSE_LENGTH, WAREHOUSE_DEPTH} from './input.js'
+
       function constructArray(maxLanes, maxRacksPerColumn, totalRacks, rackHeight) {
         const lanes = [];
-
-        let remainingRacks = totalRacks;
 
         for (let lane = 1; lane <= maxLanes; lane++) {
           const laneObj = {
@@ -59,54 +59,64 @@
 
           for (let column = 1; column <= 1; column++) {
             const columnObj = {
-              column: "Lane " + lane.toString(),
-              //column : "",
+              column: "Rack " + lane.toString(),
               racks: [],
             };
 
-            const racksToBuild = Math.min(remainingRacks, maxRacksPerColumn);
-
-            for (let rack = 1; rack <= racksToBuild; rack++) {
+            for (let rack = 1; rack <= totalRacks; rack++) {
               const rackObj = {
                 floor: rackHeight,
-                row: "Rack " + rack.toString(),
+                row: "Column " + rack.toString(),
               };
 
               columnObj.racks.push(rackObj);
+
+              if (columnObj.racks.length === maxRacksPerColumn) {
+                break;
+              }
             }
 
             laneObj.columns.push(columnObj);
-            remainingRacks -= racksToBuild;
-
-            if (remainingRacks === 0) {
-              break;
-            }
           }
 
           lanes.push(laneObj);
-
-          if (remainingRacks === 0) {
-            break;
-          }
         }
 
         return lanes;
       }
 
-      // Example usage:
-      const maxLanes = NUMBER_OF_RACK;
-      const maxRacksPerColumn = WAREHOUSE_DEPTH/WIDTH_OF_RACK;
-      const totalRacks = WAREHOUSE_DEPTH;
-      const rackHeight = HEIGHT_OF_RACK;
+      // var WIDTH_OF_RACK = 10
+      // var HEIGHT_OF_RACK = 10
+      // var NUMBER_OF_RACK = 5
+      // /*
+      // |    |
+      // |    |
+      // |    |
+      // |__|
+      // */
+      // // the horizantal length in the above image
+      // var WAREHOUSE_LENGTH = 100
 
-      const lanes = constructArray(maxLanes, maxRacksPerColumn, totalRacks, rackHeight);
-      console.log(lanes);
+      // // the vertical or depth in above image
+      // var WAREHOUSE_DEPTH = 100
+
+      // Example usage:
+      const maxLanes = NUMBER_OF_RACK
+      const maxRacksPerColumn = WAREHOUSE_DEPTH
+      const totalRacks = WAREHOUSE_DEPTH/WIDTH_OF_RACK;  //NOTHING
+      const rackHeight = HEIGHT_OF_RACK
+
+const lanes = constructArray(maxLanes, maxRacksPerColumn, totalRacks, rackHeight);
+console.log(lanes);
+
+
+
       // const lanes = [
       //   {
       //     lane: "1",
       //     columns: [
       //       {
-      //         column: "AAA",
+      //         column: "AAAbigshaq",
       //         racks: [
       //           {
       //             floor: 1, // total floor of the rack,
@@ -118,7 +128,7 @@
       //           },
       //           {
       //             floor: 4, // total floor of the rack,
-      //             row: "AAC",
+      //             row: "AACbigshaq",
       //           },
       //           {
       //             floor: 5, // total floor of the rack,
@@ -132,6 +142,15 @@
       //           {
       //             floor: 2, // total floor of the rack,
       //             row: "AAA",
+      //           },
+      //         ],
+      //       },
+      //       {
+      //         column: "AAB2",
+      //         racks: [
+      //           {
+      //             floor: 4, // total floor of the rack,
+      //             row: "AAA2",
       //           },
       //         ],
       //       },
@@ -154,33 +173,6 @@
       //         racks: [
       //           {
       //             floor: 4, // total floor of the rack,
-      //             row: "AAA",
-      //           },
-      //         ],
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     lane: "3",
-      //     columns: [
-      //       {
-      //         column: "AAE",
-      //         racks: [
-      //           {
-      //             floor: 1, // n
-      //             row: "AAA",
-      //           },
-      //           {
-      //            floor: 3, // n
-      //            row: "AAB", 
-      //           }
-      //         ],
-      //       },
-      //       {
-      //         column: "AAF",
-      //         racks: [
-      //           {
-      //             floor: 2, // n
       //             row: "AAA",
       //           },
       //         ],
@@ -232,8 +224,8 @@
       ) {
         for (let i = 1; i <= floor; i++) {
           var material = new THREE.LineBasicMaterial({
-            color: 0x000000,
-            linewidth: 4,
+            color: 0xff0000,
+            linewidth: 2,
           });
           var points = [];
 
@@ -327,7 +319,7 @@
             size - size * 0.1,
             size - size * 0.1
           );
-          var material = new THREE.MeshBasicMaterial({ color: 0xf3f3f3 });
+          var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
           var cube = new THREE.Mesh(geometry, material);
           cube.position.x = index * size * 3;
           cube.position.y = (size - 1) * (2 * i - 1);
@@ -429,7 +421,7 @@
                 (curLane - 1) * laneGap,
                 (curLane - 1) * laneGap + depth,
               ];
-              //drawLaneText(lanes[i].lane, laneRack[1], space);
+              // drawLaneText(lanes[i].lane, laneRack[1], space);
 
               drawColumn(
                 col.racks,
@@ -653,7 +645,7 @@
           });
         }
         notFilteredCells.map((v, i) => {
-          var material = new THREE.MeshBasicMaterial({ color: 0xAE906F });
+          var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
           notFilteredCells[i].material = material;
         });
 
