@@ -44,66 +44,148 @@
       var cells = [];
       var selectedLanes = [];
       var selectedRack = "";
-      const lanes = [
-        {
-          lane: "1",
-          columns: [
-            {
-              column: "AAA",
-              racks: [
-                {
-                  floor: 1, // total floor of the rack,
-                  row: "AAA",
-                },
-                {
-                  floor: 3, // total floor of the rack,
-                  row: "AAB",
-                },
-                {
-                  floor: 4, // total floor of the rack,
-                  row: "AAC",
-                },
-                {
-                  floor: 5, // total floor of the rack,
-                  row: "AAD",
-                },
-              ],
-            },
-            {
-              column: "AAB",
-              racks: [
-                {
-                  floor: 2, // total floor of the rack,
-                  row: "AAA",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          lane: "2",
-          columns: [
-            {
-              column: "AAC",
-              racks: [
-                {
-                  floor: 3, // total floor of the rack,
-                  row: "AAA",
-                },
-              ],
-            },
-            {
-              column: "AAD",
-              racks: [
-                {
-                  floor: 4, // total floor of the rack,
-                  row: "AAA",
-                },
-              ],
-            },
-          ],
-        },
-      ];
+
+      function constructArray(maxLanes, maxRacksPerColumn, totalRacks, rackHeight) {
+        const lanes = [];
+
+        let remainingRacks = totalRacks;
+
+        for (let lane = 1; lane <= maxLanes; lane++) {
+          const laneObj = {
+            lane: lane.toString(),
+            columns: [],
+          };
+
+          for (let column = 1; column <= 1; column++) {
+            const columnObj = {
+              column: "Column " + column.toString(),
+              racks: [],
+            };
+
+            const racksToBuild = Math.min(remainingRacks, maxRacksPerColumn);
+
+            for (let rack = 1; rack <= racksToBuild; rack++) {
+              const rackObj = {
+                floor: rackHeight,
+                row: "Row " + rack.toString(),
+              };
+
+              columnObj.racks.push(rackObj);
+            }
+
+            laneObj.columns.push(columnObj);
+            remainingRacks -= racksToBuild;
+
+            if (remainingRacks === 0) {
+              break;
+            }
+          }
+
+          lanes.push(laneObj);
+
+          if (remainingRacks === 0) {
+            break;
+          }
+        }
+
+        return lanes;
+      }
+
+      // Example usage:
+      const maxLanes = 4;
+      const maxRacksPerColumn = 4;
+      const totalRacks = 10;
+      const rackHeight = 5;
+
+      const lanes = constructArray(maxLanes, maxRacksPerColumn, totalRacks, rackHeight);
+      console.log(lanes);
+      // const lanes = [
+      //   {
+      //     lane: "1",
+      //     columns: [
+      //       {
+      //         column: "AAA",
+      //         racks: [
+      //           {
+      //             floor: 1, // total floor of the rack,
+      //             row: "AAA",
+      //           },
+      //           {
+      //             floor: 3, // total floor of the rack,
+      //             row: "AAB",
+      //           },
+      //           {
+      //             floor: 4, // total floor of the rack,
+      //             row: "AAC",
+      //           },
+      //           {
+      //             floor: 5, // total floor of the rack,
+      //             row: "AAD",
+      //           },
+      //         ],
+      //       },
+      //       {
+      //         column: "AAB",
+      //         racks: [
+      //           {
+      //             floor: 2, // total floor of the rack,
+      //             row: "AAA",
+      //           },
+      //         ],
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     lane: "2",
+      //     columns: [
+      //       {
+      //         column: "AAC",
+      //         racks: [
+      //           {
+      //             floor: 3, // total floor of the rack,
+      //             row: "AAA",
+      //           },
+      //         ],
+      //       },
+      //       {
+      //         column: "AAD",
+      //         racks: [
+      //           {
+      //             floor: 4, // total floor of the rack,
+      //             row: "AAA",
+      //           },
+      //         ],
+      //       },
+      //     ],
+      //   },
+      //   {
+      //     lane: "3",
+      //     columns: [
+      //       {
+      //         column: "AAE",
+      //         racks: [
+      //           {
+      //             floor: 1, // n
+      //             row: "AAA",
+      //           },
+      //           {
+      //            floor: 3, // n
+      //            row: "AAB", 
+      //           }
+      //         ],
+      //       },
+      //       {
+      //         column: "AAF",
+      //         racks: [
+      //           {
+      //             floor: 2, // n
+      //             row: "AAA",
+      //           },
+      //         ],
+      //       },
+      //     ],
+      //   },
+      // ];
 
       let rack = [
         {
@@ -540,7 +622,7 @@
         raycaster.setFromCamera(mouse, camera);
         var intersects = raycaster.intersectObjects(cells);
         if (intersects.length > 0) {
-          let code = `CHR-${intersects[0].object.userData.extra.colCode}-${intersects[0].object.userData.extra.row}-${intersects[0].object.userData.actualFloor}`;
+          let code = `${intersects[0].object.userData.extra.colCode}-${intersects[0].object.userData.extra.row}-${intersects[0].object.userData.actualFloor}`;
           console.log(code);
         }
       }
@@ -581,7 +663,7 @@
           );
           var material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
           cells[index].material = material;
-          let code = `CHR-${intersects[0].object.userData.extra.colCode}-${intersects[0].object.userData.extra.row}-${intersects[0].object.userData.actualFloor}`;
+          let code = `${intersects[0].object.userData.extra.colCode}-${intersects[0].object.userData.extra.row}-${intersects[0].object.userData.actualFloor}`;
           selectedRack = code;
           text.innerHTML = `Rack : ${selectedRack}`;
         } else {
